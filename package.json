@@ -1,0 +1,26 @@
+{
+  "name": "oracly-ethereum-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oracly/ethereum-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oracly/ethereum-api/issues"
+  },
+  "homepage": "https://github.com/oracly/ethereum-api#readme",
+  "dependencies": {
+    "bip39": "^2.5.0",
+    "ethereumjs-wallet": "^0.6.0",
+    "truffle-hdwallet-provider": "0.0.3",
+    "web3": "^1.0.0-beta.30",
+    "web3-provider-engine": "^13.6.5"
+  }
+}

@@ -13,15 +13,24 @@ import "./zeppelin/ownership/Ownable.sol";
 
 contract OraclyConnector is Destructible { // TODO change to Ownable
 
-  byte constant datasourceHTTP = 0x10;
-  byte constant datasourceCOMP = 0x20;
-  byte constant datasourceIPFS = 0x30;
+  event OraclyLog(address sender, bytes32 cid, byte datasource, string uri, string body, string[] headers, byte4 cbFunc, bool needProof, uint gaslimit, uint gasPrice);
+
+  byte constant datasourceHTTP_GET = 0x11;
+  byte constant datasourceHTTP_POST = 0x12;
+  byte constant datasourceHTTP_PUT = 0x13;
+  byte constant datasourceHTTP_PATCH = 0x14;
+  byte constant datasourceIPFS_GET = 0x21;
+  byte constant datasourceIPFS_POST = 0x22;
+  byte constant datasourceCOMP = 0x30;
 
   // WEI equivalent of $0.01
   uint public cent;
+  // Default values
   uint defaultGasPrice = 20000000000;
   uint defaultGasLimit = 200000;
+  // User's settings
   mapping (address => uint) gasPrice;
+  mapping (address => string) tlsnProxy;
   mapping (address => bool) public offchainPayment;
 
   function setGasPrice(uint newgasprice) external onlyOwner {
@@ -46,10 +55,11 @@ contract OraclyConnector is Destructible { // TODO change to Ownable
     }
     uint gasprice_ = gasPrice[_addr];
     uint _dsprice = 0;
-    if (_datasource == datasourceHTTP) {
+    if (_datasource <= datasourceHTTP_PATCH) {
       _dsprice = cent;
-    }
-    if (_datasource == datasourceCOMP) {
+    } else if (_datasource <= datasourceIPFS_POST) {
+      _dsprice = cent;
+    } else if (_datasource == datasourceCOMP) {
       // TODO
     }
     _dsprice += _gaslimit*gasprice_;
